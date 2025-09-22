@@ -16,7 +16,7 @@ test('remarkMath', async function (t) {
     .use(rehypeStringify)
 
   await t.test('should expose the public api', async function () {
-    assert.deepEqual(Object.keys(await import('remark-math')).sort(), [
+    assert.deepEqual(Object.keys(await import('remark-math-extended')).sort(), [
       'default'
     ])
   })
