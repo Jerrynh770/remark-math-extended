@@ -5,6 +5,22 @@
     "Junyoung Choi <fluke8259@gmail.com> (https://rokt33r.github.io)",
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "c8": "^10.0.0",
+    "prettier": "^3.0.0",
+    "rehype-stringify": "^10.0.0",
+    "remark-cli": "^12.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-preset-wooorm": "^11.0.0",
+    "remark-rehype": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "type-coverage": "^2.0.0",
+    "typescript": "^5.0.0",
+    "unified": "^11.0.0",
+    "unist-util-remove-position": "^5.0.0",
+    "xo": "^0.60.0"
+  },
   "dependencies": {
     "@types/mdast": "^4.0.0",
     "mdast-util-math": "^3.0.0",
@@ -39,8 +55,11 @@
   "name": "remark-math",
   "repository": "https://github.com/remarkjs/remark-math/tree/main/packages/remark-math",
   "scripts": {
+    "build": "tsc --build --clean && tsc --build && type-coverage",
+    "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
     "test-api": "node --conditions development test.js",
-    "test": "npm run build && npm run test-api"
+    "test-coverage": "c8 --100 --reporter lcov -- npm run test-api",
+    "test": "npm run build && npm run format && npm run test-coverage"
   },
   "sideEffects": false,
   "type": "module",
@@ -50,5 +69,18 @@
     "rules": {
       "logical-assignment-operators": "off"
     }
+  },
+    "prettier": {
+    "bracketSpacing": false,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
+  },
+  "remarkConfig": {
+    "plugins": [
+      "remark-preset-wooorm"
+    ]
   }
 }
