@@ -1,14 +1,12 @@
-# remark-math
+# remark-math-extended
 
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
 [![Size][size-badge]][size]
-[![Sponsors][sponsors-badge]][collective]
-[![Backers][backers-badge]][collective]
-[![Chat][chat-badge]][chat]
 
-**[remark][]** plugin to support math (`$C_L$`).
+**[remark][]** plugin to support math (`$C_L$`) plus escaped delimiters
+like `\(C_L\)` and `\[C_L\]`.
 
 ## Contents
 
@@ -34,12 +32,14 @@
 ## What is this?
 
 This package is a [unified][] ([remark][]) plugin to add support for math
-syntax.
+syntax, including dollar-delimited expressions and escaped brackets such as
+`\(\)` and `\[\]`.
 You can use this to add support for parsing and serializing this syntax
 extension.
 
 As there is no spec for math in markdown, this extension follows how code
-(fenced and text) works in Commonmark, but uses dollars (`$`).
+(fenced and text) works in Commonmark, but it also handles escaped delimiters
+alongside dollars (`$`).
 
 ## When should I use this?
 
@@ -49,9 +49,13 @@ LaTeX equations are also quite hard.
 But this mechanism works well when you want authors, that have some LaTeX
 experience, to be able to embed rich diagrams of math in scientific text.
 
+This extended build is handy when migrating content that already uses
+`\(…\)` or `\[…\]` alongside `$…$`.
+
 If you *just* want to turn markdown into HTML (with maybe a few extensions such
 as math), we recommend [`micromark`][micromark] with
-[`micromark-extension-math`][micromark-extension-math] instead.
+[`micromark-extension-math-extended`][micromark-extension-math-extended]
+instead.
 If you don’t use plugins and want to access the syntax tree, you can use
 [`mdast-util-from-markdown`][mdast-util-from-markdown] with
 [`mdast-util-math`][mdast-util-math].
@@ -68,34 +72,38 @@ This package is [ESM only][esm].
 In Node.js (version 16+), install with [npm][]:
 
 ```sh
-npm install remark-math
+npm install remark-math-extended
 ```
 
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import remarkMath from 'https://esm.sh/remark-math@6'
+import remarkMath from 'https://esm.sh/remark-math-extended@6'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
+<!--lint disable maximum-line-length no-missing-blank-lines-->
+
 ```html
 <script type="module">
-  import remarkMath from 'https://esm.sh/remark-math@6?bundle'
+  import remarkMath from 'https://esm.sh/remark-math-extended@6?bundle'
 </script>
 ```
+
+<!--lint enable maximum-line-length no-missing-blank-lines-->
 
 ## Use
 
 Say our document `example.md` contains:
 
 ```markdown
-Lift($$L$$) can be determined by Lift Coefficient ($$C_L$$) like the following
-equation.
+Lift(\\(C_L\\)) can be determined by Lift Coefficient ($C_L$) like the following
+display equation written with escaped brackets.
 
-$$
-L = \frac{1}{2} \rho v^2 S C_L
-$$
+\\[
+L = \\frac{1}{2} \\rho v^2 S C_L
+\\]
 ```
 
 …and our module `example.js` contains:
@@ -103,7 +111,7 @@ $$
 ```js
 import rehypeKatex from 'rehype-katex'
 import rehypeStringify from 'rehype-stringify'
-import remarkMath from 'remark-math'
+import remarkMath from 'remark-math-extended'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import {read} from 'to-vfile'
@@ -122,11 +130,18 @@ console.log(String(file))
 
 …then running `node example.js` yields:
 
+<!--lint disable maximum-line-length no-missing-blank-lines-->
+
 ```html
-<p>Lift(<code class="language-math math-inline"><span class="katex">…</span></code>) like the following
-equation.</p>
+<p>
+  Lift(<code class="language-math math-inline"
+    ><span class="katex">…</span></code
+  >) like the following equation.
+</p>
 <pre><code class="language-math math-display"><span class="katex-display"><span class="katex">…</span></span></code></pre>
 ```
+
+<!--lint enable maximum-line-length no-missing-blank-lines-->
 
 ## API
 
@@ -190,13 +205,11 @@ might need CSS.
 
 ## Syntax
 
-See [*Syntax* in
-`micromark-extension-math`](https://github.com/micromark/micromark-extension-math#syntax).
+See the syntax docs for [`micromark-extension-math-extended`][mme-syntax].
 
 ## Syntax tree
 
-See [*Syntax tree* in
-`mdast-util-math`](https://github.com/syntax-tree/mdast-util-math#syntax-tree).
+See the syntax tree docs for [`mdast-util-math`][mdast-util-math-syntax].
 
 ## Types
 
@@ -236,7 +249,7 @@ versions of Node.js.
 
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
-This means we try to keep the current release line, `remark-math@6`,
+This means we try to keep the current release line, `remark-math-extended@6`,
 compatible with Node.js 16.
 
 This plugin works with unified version 6+ and remark version 14+.
@@ -244,7 +257,7 @@ The previous major (version 4) worked with remark 13.
 
 ## Security
 
-Use of `remark-math` does not involve **[rehype][]** ([hast][]) or user
+Use of `remark-math-extended` does not involve **[rehype][]** ([hast][]) or user
 content so there are no openings for [cross-site scripting (XSS)][wiki-xss]
 attacks.
 
@@ -272,39 +285,36 @@ abide by its terms.
 
 ## License
 
-[MIT][license] © [Junyoung Choi][author]
+[MIT][license] © [Junyoung Choi][remark-math-author].
+
+Extended modifications © 2025 [Jerry Ho][author].
+See [license][].
 
 <!-- Definitions -->
+
+<!--lint disable maximum-line-length-->
 
 [api-options]: #options
 
 [api-remark-math]: #unifieduseremarkmath-options
 
-[author]: https://rokt33r.github.io
+[author]: https://angelrose.org
 
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+[build]: https://github.com/Jerrynh770/remark-math-extended/actions
 
-[build]: https://github.com/remarkjs/remark-math/actions
-
-[build-badge]: https://github.com/remarkjs/remark-math/workflows/main/badge.svg
-
-[chat]: https://github.com/remarkjs/remark/discussions
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/Jerrynh770/remark-math-extended/actions/workflows/main.yml/badge.svg
 
 [coc]: https://github.com/remarkjs/.github/blob/main/code-of-conduct.md
 
-[collective]: https://opencollective.com/unified
-
 [contributing]: https://github.com/remarkjs/.github/blob/main/contributing.md
 
-[coverage]: https://codecov.io/github/remarkjs/remark-math
+[coverage]: https://codecov.io/github/Jerrynh770/remark-math-extended
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/remarkjs/remark-math.svg
+[coverage-badge]: https://img.shields.io/codecov/c/github/Jerrynh770/remark-math-extended.svg
 
-[downloads]: https://www.npmjs.com/package/remark-math
+[downloads]: https://www.npmjs.com/package/remark-math-extended
 
-[downloads-badge]: https://img.shields.io/npm/dm/remark-math.svg
+[downloads-badge]: https://img.shields.io/npm/dm/remark-math-extended.svg
 
 [esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
@@ -314,17 +324,21 @@ abide by its terms.
 
 [health]: https://github.com/remarkjs/.github
 
-[license]: https://github.com/remarkjs/remark-math/blob/main/license
+[license]: https://github.com/Jerrynh770/remark-math-extended/blob/main/license
 
 [mdast-util-from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
 
 [mdast-util-math]: https://github.com/syntax-tree/mdast-util-math
 
+[mdast-util-math-syntax]: https://github.com/syntax-tree/mdast-util-math#syntax-tree
+
 [mdast-util-to-hast-fields]: https://github.com/syntax-tree/mdast-util-to-hast#fields-on-nodes
 
 [micromark]: https://github.com/micromark/micromark
 
-[micromark-extension-math]: https://github.com/micromark/micromark-extension-math
+[micromark-extension-math-extended]: https://github.com/Jerrynh770/micromark-extension-math-extended
+
+[mme-syntax]: https://github.com/Jerrynh770/micromark-extension-math-extended#syntax
 
 [npm]: https://docs.npmjs.com/cli/install
 
@@ -332,13 +346,13 @@ abide by its terms.
 
 [remark]: https://github.com/remarkjs/remark
 
+[remark-math-author]: https://rokt33r.github.io
+
 [remark-rehype]: https://github.com/remarkjs/remark-rehype
 
-[size]: https://bundlejs.com/?q=remark-math
+[size]: https://bundlejs.com/?q=remark-math-extended
 
-[size-badge]: https://img.shields.io/bundlejs/size/remark-math
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[size-badge]: https://img.shields.io/bundlejs/size/remark-math-extended
 
 [support]: https://github.com/remarkjs/.github/blob/main/support.md
 
@@ -347,3 +361,5 @@ abide by its terms.
 [unified]: https://github.com/unifiedjs/unified
 
 [wiki-xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
+
+<!--lint enable maximum-line-length-->
