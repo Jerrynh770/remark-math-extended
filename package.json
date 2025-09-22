@@ -24,7 +24,7 @@
   "dependencies": {
     "@types/mdast": "^4.0.0",
     "mdast-util-math": "^3.0.0",
-    "micromark-extension-math": "^3.0.0",
+    "micromark-extension-math-extended": "^3.0.0",
     "unified": "^11.0.0"
   },
   "description": "remark plugin to parse and stringify math",
@@ -70,7 +70,7 @@
       "logical-assignment-operators": "off"
     }
   },
-    "prettier": {
+  "prettier": {
     "bracketSpacing": false,
     "semi": false,
     "singleQuote": true,
